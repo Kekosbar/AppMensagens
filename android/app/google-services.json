@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "856016907980",
+    "firebase_url": "https://aprendizado-d09ee.firebaseio.com",
+    "project_id": "aprendizado-d09ee",
+    "storage_bucket": "aprendizado-d09ee.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:856016907980:android:ded7622d5bafc11f7d1c69",
+        "android_client_info": {
+          "package_name": "com.aprendefirebase"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "856016907980-45ngs2kvnbcr09fp8gsdbjs8u3qaegcj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCA5kqpYaUwG0TpBmRMUWro-5KEAdts2vw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "856016907980-45ngs2kvnbcr09fp8gsdbjs8u3qaegcj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

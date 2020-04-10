@@ -1,0 +1,2 @@
+Criando uma aplicação mobile como o objetivo de permitir a troca de mensagens entre os usuários cadastrados no sistema.
+A aplicação foi desenvolvida utilizando-se das tecnologias, React Native e Firebase.
