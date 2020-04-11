@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import { StyleSheet, View, Text, FlatList, Image, TouchableNativeFeedback } from 'react-native'
+import { StyleSheet, View, Text, FlatList, Image, TouchableNativeFeedback, BackHandler } from 'react-native'
 import firebase from '../services/firebase'
 
 let navigation;
@@ -14,11 +14,27 @@ const Logado = (props) => {
         getUserBDonline()
     },[])
 
+    useEffect(() => {
+        BackHandler.addEventListener("hardwareBackPress", backButtonHandler);
+        return () => {
+            BackHandler.removeEventListener("hardwareBackPress", backButtonHandler);
+        };
+      }, [backButtonHandler]);
+  
+    function backButtonHandler() {
+        if (props.navigation.isFocused()) {
+            BackHandler.exitApp()
+            return true;
+        } else
+            return false
+    }
+
     async function getUserBDonline(){
         let array = []
         setUsers(array)
         firebase.database().ref('users').orderByChild('name')
         .on('child_added', (snapshot) => {
+            console.log(snapshot.val())
             array.push({
                 uid: snapshot.key,
                 ...snapshot.val(),

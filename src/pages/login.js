@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import { StyleSheet, View, Text, TextInput, Button, Image, Alert, TouchableOpacity } from 'react-native'
+import { StyleSheet, View, Text, TextInput, Button, Image, Alert, TouchableOpacity, BackHandler } from 'react-native'
 import firebaseRN from 'react-native-firebase'
 import firebase from '../services/firebase'
 
@@ -11,6 +11,21 @@ const Login = (props) => {
     useEffect(() => {
         // notificationControl()
     },[])
+
+    useEffect(() => {
+        BackHandler.addEventListener("hardwareBackPress", backButtonHandler);
+        return () => {
+            BackHandler.removeEventListener("hardwareBackPress", backButtonHandler);
+        };
+      }, [backButtonHandler]);
+  
+    function backButtonHandler() {
+        if (props.navigation.isFocused()) {
+            BackHandler.exitApp()
+            return true;
+        } else
+            return false
+    }
 
     const onPressLogin = () => {
         firebase.auth().signInWithEmailAndPassword(email, password)

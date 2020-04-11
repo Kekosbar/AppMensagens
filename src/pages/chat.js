@@ -119,7 +119,14 @@ const Chat = (props) => {
 
     return(
         <View style={styles.container}>
-            <View style={{ flex: 1 }}>
+            <View style={styles.containerUser}>
+                <Image
+                    style={styles.imgIconUser}
+                    source={require('../images/userIcon.png')}
+                />
+                <Text style={styles.txtName}>{contact.name}</Text>
+            </View>
+            <View style={{ flex: 1, padding: 10 }}>
                 <FlatList
                     style={{flex: 1, }}
                     inverted={true}
@@ -158,6 +165,10 @@ const Chat = (props) => {
     );
 }
 
+Chat.navigationOptions = screenProps => ({
+    header: null
+});
+
 export default Chat;
 
 const styles = StyleSheet.create({
@@ -166,8 +177,22 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'flex-end',
         backgroundColor: '#444148',
-        paddingLeft: 10,
-        paddingRight: 10,
+    },
+    containerUser: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderBottomWidth: 2,
+        padding: 10,
+    },
+    txtName: {
+        color: 'white',
+        marginLeft: 20,
+        fontSize: 18,
+    },
+    imgIconUser: {
+        height: 35,
+        width: 35,
+        backgroundColor: 'white'
     },
     containerMsm: {
         alignSelf: 'flex-start',

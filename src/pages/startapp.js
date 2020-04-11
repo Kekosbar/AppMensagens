@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import { StyleSheet, View, Text, Image } from 'react-native'
+import { StyleSheet, View, Text, Image, ActivityIndicator } from 'react-native'
 import firebase from '../services/firebase'
 
 const StartApp = (props) => {
@@ -25,6 +25,8 @@ const StartApp = (props) => {
                 source={require('../images/iconMessage.png')}
             />
             <Text style={styles.title}>App de Mensagens</Text>
+            <ActivityIndicator size={35} color="white" />
+            <Text style={styles.msm}>Conectando ao servidor</Text>
         </View>
     );
 }
@@ -47,10 +49,15 @@ const styles = StyleSheet.create({
         fontWeight: 'normal',
         fontSize: 25,
         fontFamily: 'sans-serif-light',
-        marginBottom: 50,
+        marginBottom: 20,
     },
     imgTitle: {
         height: 80,
         width: 80,
+    },
+    msm: {
+        color: 'white',
+        fontSize: 20,
+        marginTop: 20,
     },
 })
