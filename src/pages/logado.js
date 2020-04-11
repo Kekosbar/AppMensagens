@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import { StyleSheet, View, Text, FlatList, Image, TouchableNativeFeedback, BackHandler } from 'react-native'
+import { StyleSheet, View, Text, Buttom, FlatList, Image, TouchableNativeFeedback, BackHandler, ActivityIndicator } from 'react-native'
 import firebase from '../services/firebase'
 
 let navigation;
@@ -8,6 +8,7 @@ const Logado = (props) => {
 
     const [users, setUsers] = useState([])
     const [state, setState] = useState([])
+    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
         navigation = props.navigation
@@ -30,16 +31,21 @@ const Logado = (props) => {
     }
 
     async function getUserBDonline(){
+        setLoading(true)
         let array = []
         setUsers(array)
+        let index = 0;
         firebase.database().ref('users').orderByChild('name')
         .on('child_added', (snapshot) => {
-            console.log(snapshot.val())
+            console.log(snapshot.val().name)
             array.push({
                 uid: snapshot.key,
                 ...snapshot.val(),
             })
-            setState({...state}) // refresh screen
+            index++;
+            if(snapshot.numChildren() == index)
+                setLoading(false)
+            setState({...state})
         })
     }
 
@@ -67,11 +73,15 @@ const Logado = (props) => {
 
     return(
         <View style={styles.container}>
-            <FlatList
-                data={users}
-                renderItem={renderItem}
-                keyExtractor={index => index.toString()}
-            />
+            {loading ? (
+                <ActivityIndicator size={50} color="white" />
+            ) : (
+                <FlatList
+                    data={users}
+                    renderItem={renderItem}
+                    keyExtractor={index => index.toString()}
+                />
+            )}
         </View>
     );
 }
@@ -125,6 +135,7 @@ const styles = StyleSheet.create({
     imgIconUser: {
         height: 35,
         width: 35,
+        borderRadius: 50,
         backgroundColor: 'white'
     },
 })

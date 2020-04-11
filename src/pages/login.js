@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import { StyleSheet, View, Text, TextInput, Button, Image, Alert, TouchableOpacity, BackHandler } from 'react-native'
+import { StyleSheet, View, Text, TextInput, Button, Image, Alert, TouchableOpacity, BackHandler, ActivityIndicator } from 'react-native'
 import firebaseRN from 'react-native-firebase'
 import firebase from '../services/firebase'
 
@@ -7,10 +7,7 @@ const Login = (props) => {
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-
-    useEffect(() => {
-        // notificationControl()
-    },[])
+    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
         BackHandler.addEventListener("hardwareBackPress", backButtonHandler);
@@ -28,6 +25,7 @@ const Login = (props) => {
     }
 
     const onPressLogin = () => {
+        setLoading(true)
         firebase.auth().signInWithEmailAndPassword(email, password)
             .then((result) => {
                 console.log(result.user.uid)
@@ -35,6 +33,7 @@ const Login = (props) => {
                 props.navigation.navigate('Logado')
             })
             .catch((error) => Alert.alert('ERRO!', error.message))
+            .finally(()=>setLoading(false))
     }
 
     // NOTIFICATIONS
@@ -86,21 +85,29 @@ const Login = (props) => {
                 source={require('../images/iconMessage.png')}
             />
             <Text style={styles.title}>App de Mensagens</Text>
-            <TextInput
-                style={styles.input}
-                placeholder="Email"
-                onChangeText={(text) => setEmail(text)}
-            />
-            <TextInput
-                style={styles.input}
-                secureTextEntry={true}
-                placeholder="Senha"
-                onChangeText={(text) => setPassword(text)}
-            />
+            <View>
+                <Text style={styles.label}>Email</Text>
+                <TextInput
+                    style={styles.input}
+                    placeholder="Email"
+                    onChangeText={(text) => setEmail(text)}
+                />
+                <Text style={styles.label}>Senha</Text>
+                <TextInput
+                    style={styles.input}
+                    secureTextEntry={true}
+                    placeholder="Senha"
+                    onChangeText={(text) => setPassword(text)}
+                />
+            </View>
             <TouchableOpacity
                 onPress={onPressLogin}>
                 <View style={styles.buttom}>
-                    <Text style={styles.txtButtom}>LOGIN</Text>
+                    {loading ? (
+                        <ActivityIndicator size={25} color="#9141E0" />
+                    ) : (
+                        <Text style={styles.txtButtom}>LOGIN</Text>
+                    )}
                 </View>
             </TouchableOpacity>
             <TouchableOpacity
@@ -131,7 +138,12 @@ const styles = StyleSheet.create({
         fontWeight: 'normal',
         fontSize: 25,
         fontFamily: 'sans-serif-light',
-        marginBottom: 50,
+        marginBottom: 30,
+    },
+    label: {
+        color: 'white',
+        alignSelf: 'flex-start',
+        fontSize: 16,
     },
     imgTitle: {
         height: 80,
@@ -141,7 +153,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         padding: 5,
         width: 250,
-        marginBottom: 40,
+        marginBottom: 20,
         borderRadius: 10,
         backgroundColor: 'white',
         fontSize: 14,

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, View, Text, FlatList, Image, TextInput, TouchableWithoutFeedback } from 'react-native'
+import { StyleSheet, View, Text, FlatList, Image, TextInput, TouchableWithoutFeedback, Buttom } from 'react-native'
 import firebase from '../services/firebase'
 
 const Chat = (props) => {
@@ -192,6 +192,7 @@ const styles = StyleSheet.create({
     imgIconUser: {
         height: 35,
         width: 35,
+        borderRadius: 50,
         backgroundColor: 'white'
     },
     containerMsm: {
