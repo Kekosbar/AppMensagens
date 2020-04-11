@@ -2,12 +2,15 @@ import React, {useEffect, useState} from 'react'
 import { StyleSheet, View, Text, FlatList, Image, TouchableNativeFeedback } from 'react-native'
 import firebase from '../services/firebase'
 
+let navigation;
+
 const Logado = (props) => {
 
     const [users, setUsers] = useState([])
     const [state, setState] = useState([])
 
     useEffect(() => {
+        navigation = props.navigation
         getUserBDonline()
     },[])
 
@@ -26,8 +29,7 @@ const Logado = (props) => {
 
     function enterChat(item){
         props.navigation.navigate('Chat', {
-            contact: item,
-            
+            contact: item,       
         })
     }
 
@@ -60,16 +62,16 @@ const Logado = (props) => {
 
 const onPressLogout = () => {
     firebase.auth().signOut()
-        .then(() => props.navigation.navigate('Login'))
+        .then(() => navigation.navigate('Login'))
 }
 
 Logado.navigationOptions = screenProps => ({
-    
+    headerLeft: null,
     headerRight: () => (
         <TouchableNativeFeedback
             onPress={onPressLogout}>
             <Image
-                style={{height: 25, width: 25, marginRight: 20}}
+                style={{height: 30, width: 30, marginRight: 20}}
                 source={require('../images/exit.png')}
             />
         </TouchableNativeFeedback>
@@ -83,6 +85,7 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'column',
         justifyContent: 'center',
+        backgroundColor: '#444148'
     },
 
     input: {
@@ -95,14 +98,17 @@ const styles = StyleSheet.create({
         alignSelf: 'stretch',
         alignItems: 'center',
         borderBottomWidth: 1,
+        borderBottomColor: 'white',
         padding: 15,
     },
 
     txtName: {
+        color: 'white',
         marginLeft: 20,
     },
     imgIconUser: {
         height: 35,
         width: 35,
+        backgroundColor: 'white'
     },
 })

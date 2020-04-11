@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import { StyleSheet, View, Text, TextInput, Button, Alert } from 'react-native'
+import { StyleSheet, View, Text, TextInput, Button, Image, Alert, TouchableOpacity } from 'react-native'
 import firebaseRN from 'react-native-firebase'
 import firebase from '../services/firebase'
 
@@ -66,6 +66,11 @@ const Login = (props) => {
 
     return(
         <View style={styles.container}>
+            <Image
+                style={styles.imgTitle}
+                source={require('../images/iconMessage.png')}
+            />
+            <Text style={styles.title}>App de Mensagens</Text>
             <TextInput
                 style={styles.input}
                 placeholder="Email"
@@ -77,18 +82,25 @@ const Login = (props) => {
                 placeholder="Senha"
                 onChangeText={(text) => setPassword(text)}
             />
-            <Button
-                title="Login"
-                onPress={onPressLogin}
-            />
-            <View style={{margin: 20}}></View>
-            <Button
-                title="Cadastro"
-                onPress={() => props.navigation.navigate('Cadastro')}
-            />
+            <TouchableOpacity
+                onPress={onPressLogin}>
+                <View style={styles.buttom}>
+                    <Text style={styles.txtButtom}>LOGIN</Text>
+                </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+                onPress={() => props.navigation.navigate('Cadastro')}>
+                <View style={[styles.buttom, {backgroundColor: '#9141E0'}]}>
+                    <Text style={[styles.txtButtom, {color: 'white'}]}>CADASTRO</Text>
+                </View>
+            </TouchableOpacity>
         </View>
     );
 }
+
+Login.navigationOptions = screenProps => ({
+    header: null
+});
 
 export default Login
 
@@ -97,12 +109,39 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
+        backgroundColor: '#444148'
     },
-
+    title: {
+        color: 'white',
+        fontWeight: 'normal',
+        fontSize: 25,
+        fontFamily: 'sans-serif-light',
+        marginBottom: 50,
+    },
+    imgTitle: {
+        height: 80,
+        width: 80,
+    },
     input: {
         borderWidth: 1,
         padding: 5,
         width: 250,
-        marginBottom: 50,
+        marginBottom: 40,
+        borderRadius: 10,
+        backgroundColor: 'white',
+        fontSize: 14,
+    },
+    buttom: {
+        width: 200,
+        borderWidth: 4,
+        borderColor: '#9141E0',
+        padding: 10,
+        alignItems: 'center',
+        margin: 20,
+    },
+    txtButtom: {
+        color: '#9141E0',
+        fontWeight: 'bold',
+        fontSize: 18,
     },
 })

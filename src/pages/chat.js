@@ -38,10 +38,14 @@ const Chat = (props) => {
         const uidEmitter = firebase.auth().currentUser.uid
         const uidReceptor = contact.uid
         let array = []
+        const today = getDateNow()
         firebase.database().ref('users/'+uidEmitter+'/messages/'+uidReceptor)
         .on('child_added', (snapshot) => {
-            console.log(snapshot.val())
-            array.unshift(snapshot.val())
+            array.unshift({
+                ...snapshot.val(),
+                date: convertTimestampToDate(snapshot.val().date, today)
+            })
+            setState({...state})
         })
         setMessages(array)
     }
@@ -72,12 +76,35 @@ const Chat = (props) => {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
 
+    function getDateNow() {
+        let today = new Date();
+        let dd = String(today.getDate()).padStart(2, '0');
+        let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+        let yyyy = today.getFullYear();
+
+        return { dd, mm, yyyy };
+    }
+
+    function convertTimestampToDate(timestamp, today){
+        const date = new Date(timestamp)
+        let dd = String(date.getDate()).padStart(2, '0');
+        let mm = String(date.getMonth() + 1).padStart(2, '0'); //January is 0!
+        let yyyy = date.getFullYear();
+        let min = String(date.getMinutes()).padStart(2, '0');;
+        let hrs = String(date.getHours()).padStart(2, '0');;
+
+        if(today.dd == dd && today.mm == mm)
+            return hrs + ':' + min
+        else
+            return dd + '/' + mm;
+    }
+
     const renderItem = ({item, index}) => {
         if(item.owner)
             return(
                 <View style={styles.containerMyMsm}>
                     <Text style={styles.txtMyMsm}>{item.msm}</Text>
-                    <Text style={styles.txtData}>{item.date}</Text>
+                    <Text style={styles.txtMyData}>{item.date}</Text>
                 </View>
             );
         else
@@ -138,6 +165,7 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'column',
         justifyContent: 'flex-end',
+        backgroundColor: '#444148',
         paddingLeft: 10,
         paddingRight: 10,
     },
@@ -168,10 +196,16 @@ const styles = StyleSheet.create({
     },
     txtData: {
         fontSize: 11,
+        color: '#555555',
+        alignSelf: 'flex-end'
+    },
+    txtMyData: {
+        fontSize: 11,
         color: 'white',
         alignSelf: 'flex-end'
     },
     containerInput: {
+        backgroundColor: 'white',
         flexDirection: 'row',
         alignItems: 'center',
         alignSelf: 'stretch',
