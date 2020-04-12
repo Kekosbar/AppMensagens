@@ -39,7 +39,7 @@ const Chat = (props) => {
         const uidReceptor = contact.uid
         let array = []
         const today = getDateNow()
-        firebase.database().ref('users/'+uidEmitter+'/messages/'+uidReceptor)
+        firebase.database().ref('messages/'+uidEmitter+'/'+uidReceptor)
         .on('child_added', (snapshot) => {
             array.unshift({
                 ...snapshot.val(),
@@ -53,9 +53,8 @@ const Chat = (props) => {
     function sendMsm(msm){
         const uidEmitter = firebase.auth().currentUser.uid
         const uidReceptor = contact.uid
-        firebase.database().ref('users')
+        firebase.database().ref('messages')
         .child(uidEmitter)
-        .child('messages')
         .child(uidReceptor)
         .push({
             msm,

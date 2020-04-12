@@ -35,7 +35,8 @@ const Logado = (props) => {
         let array = []
         setUsers(array)
         let index = 0;
-        firebase.database().ref('users').orderByChild('name')
+        firebase.database().ref('users')
+        .orderByChild('name')
         .on('child_added', (snapshot) => {
             console.log(snapshot.val().name)
             array.push({

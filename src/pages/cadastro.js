@@ -11,7 +11,7 @@ const Cadastro = (props) => {
     const [loading, setLoading] = useState(false)
 
     useEffect(() => {
-        // notificationControl()
+        
     },[])
 
     const onPressCadastro = async () => {
