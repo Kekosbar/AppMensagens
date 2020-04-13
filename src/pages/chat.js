@@ -121,7 +121,7 @@ const Chat = (props) => {
             <View style={styles.containerUser}>
                 <Image
                     style={styles.imgIconUser}
-                    source={require('../images/userIcon.png')}
+                    source={contact.photo != '' ? {uri: 'data:image/png;base64,' + contact.photo} : require('../images/userIcon.png')}
                 />
                 <Text style={styles.txtName}>{contact.name}</Text>
             </View>

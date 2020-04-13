@@ -28,6 +28,8 @@ const Login = (props) => {
         setLoading(true)
         firebase.auth().signInWithEmailAndPassword(email, password)
             .then((result) => {
+                setEmail('')
+                setPassword('')
                 // Salvando o token para disparo de notificações
                 notificationControl(result.user.uid)
                 props.navigation.navigate('Logado')
@@ -46,12 +48,14 @@ const Login = (props) => {
             <View>
                 <Text style={styles.label}>Email</Text>
                 <TextInput
+                    value={email}
                     style={styles.input}
                     placeholder="Email"
                     onChangeText={(text) => setEmail(text)}
                 />
                 <Text style={styles.label}>Senha</Text>
                 <TextInput
+                    value={password}
                     style={styles.input}
                     secureTextEntry={true}
                     placeholder="Senha"
@@ -62,7 +66,7 @@ const Login = (props) => {
                 onPress={onPressLogin}>
                 <View style={styles.buttom}>
                     {loading ? (
-                        <ActivityIndicator size={25} color="#9141E0" />
+                        <ActivityIndicator size={25} color="#A900FC" />
                     ) : (
                         <Text style={styles.txtButtom}>LOGIN</Text>
                     )}
@@ -125,7 +129,7 @@ const styles = StyleSheet.create({
         margin: 20,
     },
     txtButtom: {
-        color: '#9141E0',
+        color: '#A900FC',
         fontWeight: 'bold',
         fontSize: 18,
     },

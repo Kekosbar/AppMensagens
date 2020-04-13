@@ -64,7 +64,7 @@ const Logado = (props) => {
                 <View style={styles.containerUser}>
                     <Image
                         style={styles.imgIconUser}
-                        source={require('../images/userIcon.png')}
+                        source={item.photo != '' ? {uri: 'data:image/png;base64,' + item.photo} : require('../images/userIcon.png')}
                     />
                     <Text style={styles.txtName}>{item.name}</Text>
                 </View>

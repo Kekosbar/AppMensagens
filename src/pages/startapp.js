@@ -25,8 +25,8 @@ const StartApp = (props) => {
                 source={require('../images/iconMessage.png')}
             />
             <Text style={styles.title}>App de Mensagens</Text>
-            <ActivityIndicator size={35} color="white" />
             <Text style={styles.msm}>Conectando ao servidor</Text>
+            <ActivityIndicator size={35} color="white" />
         </View>
     );
 }
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
         fontWeight: 'normal',
         fontSize: 25,
         fontFamily: 'sans-serif-light',
-        marginBottom: 20,
+        marginBottom: 10,
     },
     imgTitle: {
         height: 80,
@@ -58,6 +58,6 @@ const styles = StyleSheet.create({
     msm: {
         color: 'white',
         fontSize: 20,
-        marginTop: 20,
+        marginBottom: 10,
     },
 })

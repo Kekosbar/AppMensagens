@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react'
-import { StyleSheet, ScrollView, View, Text, TextInput, Button, Alert, ActivityIndicator, TouchableOpacity, Image } from 'react-native'
+import { StyleSheet, ScrollView, View, Text, TextInput, Button, Alert, ActivityIndicator, TouchableOpacity, Image, NativeModules } from 'react-native'
 import api from '../services/api'
+import DialogListPhoto from '../components/dialogListPhoto'
 
 const Cadastro = (props) => {
 
@@ -9,6 +10,10 @@ const Cadastro = (props) => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [loading, setLoading] = useState(false)
+    const [image, setImage] = useState({
+        base64: '', uri: '',
+    })
+    const [dialogList, setDialogList] = useState({visible: false})
 
     useEffect(() => {
         
@@ -21,7 +26,8 @@ const Cadastro = (props) => {
         }
         setLoading(true)
         const data = {
-            name, age, email, password
+            name, age, email, password, 
+            photo: image.base64
         }
         api.post('/register', data)
             .then(() => {
@@ -30,6 +36,24 @@ const Cadastro = (props) => {
             })
             .catch(() => Alert.alert('ERRO!', 'Verifique o seus dados e tente novamente'))
             .finally(() => setLoading(false))
+    }
+
+    function usaCamera() {
+        setDialogList({visible: false})
+        console.log('Usa camera')
+        NativeModules.Bulb.usaCamera(saveImage);
+    }
+
+    function getFotoGaleria() {
+        console.log('Get foto galeria')
+        setDialogList({visible: false})
+        NativeModules.Bulb.getFotoGaleria(saveImage);
+    }
+
+    const saveImage = (img) => {
+        const base64 = img
+        const uri = {uri: 'data:image/png;base64,' + img}
+        setImage({base64, uri})
     }
 
     return(
@@ -42,6 +66,11 @@ const Cadastro = (props) => {
                     source={require('../images/user-group-icon.png')}
                 />
             </View>
+            <TouchableOpacity
+                onPress={() => setDialogList({visible: true, title: 'Escolha uma opção'})}>
+                    <Image style={styles.imgPhoto} 
+                        source={image.base64 === '' ? require('../images/photoIcon.png') : image.uri}/>
+            </TouchableOpacity>
             <View>
                 <Text style={styles.label}>Username</Text>
                 <TextInput
@@ -64,6 +93,7 @@ const Cadastro = (props) => {
                 />
             </View>
             <TouchableOpacity
+                disabled={loading}
                 onPress={onPressCadastro}>
                 <View style={[styles.buttom, {backgroundColor: '#9141E0'}]}>
                     {loading ? (
@@ -74,6 +104,16 @@ const Cadastro = (props) => {
                 </View>
             </TouchableOpacity>
             </View>
+
+            <DialogListPhoto
+                visible={dialogList.visible}
+                title={dialogList.title}
+                onTouchOutside={() => setDialogList({visible: false})}
+                data={[
+                    {key: '1', texto: 'Tirar uma foto', funcao: () => usaCamera(), imagem: require('../images/photo_camera.png')},
+                    {key: '2', texto: 'Foto da galeria', funcao: () => getFotoGaleria(), imagem: require('../images/folder-24px.png')},
+                ]}
+            />
         </ScrollView>
     );
 }
@@ -95,20 +135,20 @@ const styles = StyleSheet.create({
     },
     txtTitle: {
         color: 'white',
-        fontSize: 35,
+        fontSize: 30,
         fontWeight: 'bold',
         marginBottom: 10
     },
     imgTitle: {
-        height: 80,
-        width: 80,
+        height: 60,
+        width: 60,
         marginLeft: 20,
     },
     input: {
         borderWidth: 1,
         padding: 5,
         width: 250,
-        marginBottom: 25,
+        marginBottom: 15,
         borderRadius: 10,
         backgroundColor: 'white'
     },
@@ -129,5 +169,12 @@ const styles = StyleSheet.create({
         color: '#9141E0',
         fontWeight: 'bold',
         fontSize: 18,
+    },
+    imgPhoto: {
+        backgroundColor: 'white',
+        height: 100,
+        width: 100,
+        borderRadius: 20,
+        marginBottom: 20
     },
 })
