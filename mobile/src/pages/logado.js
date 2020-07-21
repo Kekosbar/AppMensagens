@@ -13,6 +13,7 @@ const Logado = (props) => {
     useEffect(() => {
         navigation = props.navigation
         getUserBDonline()
+        userOnlineChange()
     },[])
 
     useEffect(() => {
@@ -22,6 +23,18 @@ const Logado = (props) => {
         };
       }, [backButtonHandler]);
   
+    function userOnlineChange(){
+        const uid = firebase.auth().currentUser.uid;
+        const userStatusDatabaseRef = firebase.database().ref('/users/' + uid);
+        
+            userStatusDatabaseRef.onDisconnect().update({state: 'offline'}).then(function() {
+                console.log('onDisconnect')
+                userStatusDatabaseRef.update({state: 'online'});
+            });
+        
+
+    }
+
     function backButtonHandler() {
         if (props.navigation.isFocused()) {
             BackHandler.exitApp()
